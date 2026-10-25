@@ -1,0 +1,40 @@
+# 1. Создаем суперкласс Widget
+class Widget:
+    def __init__(self, text, x, y):
+        self.text = text
+        self.x = x
+        self.y = y
+
+    def print_info(self):
+        print(f"Надпись: {self.text}")
+        print(f"Расположение: {self.x} {self.y}")
+
+
+# 2. Создаем класс-наследник Button
+class Button(Widget):
+    def __init__(self, text, x, y):
+        # Забираем свойства родителя
+        super().__init__(text, x, y)
+        # Добавляем новое свойство
+        self.is_clicked = False
+
+    def click(self):
+        self.is_clicked = True
+        print("Вы зарегистрированы")
+
+
+# 3. Основная программа (без отступов)
+# Создаем экземпляр класса Button
+my_button = Button("Участвовать", 100, 100)
+
+# Печатаем информацию о кнопке
+my_button.print_info()
+
+# Задаем вопрос и ждем ответа
+answer = input("Хотите зарегистрироваться? (да/нет): ")
+
+# Проверяем ответ
+if answer == "да":
+    my_button.click()
+elif answer == "нет":
+    print("А жаль")
