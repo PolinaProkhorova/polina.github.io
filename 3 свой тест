@@ -1,20 +1,29 @@
+# ==========================================
+# ЧАСТЬ 1: ПОДКЛЮЧАЕМ ИНСТРУМЕНТЫ
+# ==========================================
 import sys
+# Импортируем всё те же инструменты для создания окошек
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QRadioButton, QVBoxLayout, QMessageBox
 
 
-class TestWindow(QWidget):
+# ==========================================
+# ЧАСТЬ 2: СОЗДАЕМ КЛАСС ОКНА
+# ==========================================
+class TestWindow(QWidget):  # Наследуемся от QWidget
     def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Тест для спонсоров")
-        self.resize(500, 300)
+        super().__init__()  # Настройка родителя
+        
+        self.setWindowTitle("Тест для спонсоров")  # Заголовок окна
+        self.resize(500, 300)  # Размер побольше, так как вариантов много
 
+        # Создаем вертикальную сетку
         layout = QVBoxLayout()
 
-        # Текст вопроса
+        # Создаем длинный текст вопроса
         question = QLabel("Как звали первого ютуб-блогера, набравшего 100000000 подписчиков?")
-        layout.addWidget(question)
+        layout.addWidget(question)  # Кидаем вопрос в сетку
 
-        # Создаем 6 вариантов ответа
+        # Создаем 6 кнопок с вариантами ответов
         self.rb1 = QRadioButton("PewDiePie")
         self.rb2 = QRadioButton("Рэт и Линк")
         self.rb3 = QRadioButton("SlivkiShow")
@@ -22,7 +31,7 @@ class TestWindow(QWidget):
         self.rb5 = QRadioButton("Mister Max")
         self.rb6 = QRadioButton("EeOneGuy")
 
-        # Добавляем их в окно
+        # По очереди добавляем все 6 кнопок в сетку
         layout.addWidget(self.rb1)
         layout.addWidget(self.rb2)
         layout.addWidget(self.rb3)
@@ -30,30 +39,35 @@ class TestWindow(QWidget):
         layout.addWidget(self.rb5)
         layout.addWidget(self.rb6)
 
-        # Привязываем клики
-        self.rb1.clicked.connect(self.show_win)  # Правильный ответ
-        self.rb2.clicked.connect(self.show_lose)
+        # Привязываем клики мышкой к функциям
+        self.rb1.clicked.connect(self.show_win)   # Первая кнопка (PewDiePie) - правильная
+        self.rb2.clicked.connect(self.show_lose)  # Остальные - неправильные
         self.rb3.clicked.connect(self.show_lose)
         self.rb4.clicked.connect(self.show_lose)
         self.rb5.clicked.connect(self.show_lose)
         self.rb6.clicked.connect(self.show_lose)
 
+        # Устанавливаем сетку в окно
         self.setLayout(layout)
 
+    # Функция для правильного ответа
     def show_win(self):
-        msg = QMessageBox()
-        msg.setText("Вы выиграли встречу с создателями канала")
-        msg.exec_()
+        msg = QMessageBox()  # Создаем окошко с сообщением
+        msg.setText("Вы выиграли встречу с создателями канала")  # Текст сообщения
+        msg.exec_()  # Показываем окошко
 
+    # Функция для неправильного ответа
     def show_lose(self):
-        msg = QMessageBox()
-        msg.setText("Повезёт в другой раз!")
-        msg.exec_()
+        msg = QMessageBox()  # Создаем окошко
+        msg.setText("Повезёт в другой раз!")  # Текст сообщения
+        msg.exec_()  # Показываем окошко
 
 
-# Запуск программы
+# ==========================================
+# ЧАСТЬ 3: ЗАПУСК ПРОГРАММЫ
+# ==========================================
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = TestWindow()
-    window.show()
-    sys.exit(app.exec_())
+    app = QApplication(sys.argv)  # Создаем приложение
+    window = TestWindow()         # Создаем наше окно
+    window.show()                 # Показываем окно
+    sys.exit(app.exec_())         # Запускаем работу окна
