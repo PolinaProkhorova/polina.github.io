@@ -1,0 +1,59 @@
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QRadioButton, QVBoxLayout, QMessageBox
+
+
+class TestWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Тест для спонсоров")
+        self.resize(500, 300)
+
+        layout = QVBoxLayout()
+
+        # Текст вопроса
+        question = QLabel("Как звали первого ютуб-блогера, набравшего 100000000 подписчиков?")
+        layout.addWidget(question)
+
+        # Создаем 6 вариантов ответа
+        self.rb1 = QRadioButton("PewDiePie")
+        self.rb2 = QRadioButton("Рэт и Линк")
+        self.rb3 = QRadioButton("SlivkiShow")
+        self.rb4 = QRadioButton("TheBrianMaps")
+        self.rb5 = QRadioButton("Mister Max")
+        self.rb6 = QRadioButton("EeOneGuy")
+
+        # Добавляем их в окно
+        layout.addWidget(self.rb1)
+        layout.addWidget(self.rb2)
+        layout.addWidget(self.rb3)
+        layout.addWidget(self.rb4)
+        layout.addWidget(self.rb5)
+        layout.addWidget(self.rb6)
+
+        # Привязываем клики
+        self.rb1.clicked.connect(self.show_win)  # Правильный ответ
+        self.rb2.clicked.connect(self.show_lose)
+        self.rb3.clicked.connect(self.show_lose)
+        self.rb4.clicked.connect(self.show_lose)
+        self.rb5.clicked.connect(self.show_lose)
+        self.rb6.clicked.connect(self.show_lose)
+
+        self.setLayout(layout)
+
+    def show_win(self):
+        msg = QMessageBox()
+        msg.setText("Вы выиграли встречу с создателями канала")
+        msg.exec_()
+
+    def show_lose(self):
+        msg = QMessageBox()
+        msg.setText("Повезёт в другой раз!")
+        msg.exec_()
+
+
+# Запуск программы
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = TestWindow()
+    window.show()
+    sys.exit(app.exec_())
