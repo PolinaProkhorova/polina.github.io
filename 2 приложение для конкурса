@@ -1,0 +1,59 @@
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QRadioButton, QVBoxLayout, QMessageBox
+
+
+class ContestWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Конкурс от Crazy People")
+        self.resize(400, 200)
+
+        # Создаем вертикальную сетку (лэйаут)
+        layout = QVBoxLayout()
+
+        # 1. Добавляем текст вопроса
+        question = QLabel("В каком году канал получил «золотую кнопку» от YouTube?")
+        layout.addWidget(question)
+
+        # 2. Создаем 4 кнопки-переключателя
+        self.rb1 = QRadioButton("2005")
+        self.rb2 = QRadioButton("2010")
+        self.rb3 = QRadioButton("2015")
+        self.rb4 = QRadioButton("2020")
+
+        # 3. Добавляем их в сетку
+        layout.addWidget(self.rb1)
+        layout.addWidget(self.rb2)
+        layout.addWidget(self.rb3)
+        layout.addWidget(self.rb4)
+
+        # 4. Привязываем клики мышкой к функциям
+        self.rb1.clicked.connect(self.show_lose)
+        self.rb2.clicked.connect(self.show_lose)
+        self.rb3.clicked.connect(self.show_win)  # Это правильный ответ
+        self.rb4.clicked.connect(self.show_lose)
+
+        # Устанавливаем сетку в наше окно
+        self.setLayout(layout)
+
+    # Функция, если ответ правильный (вызывается при клике на 2015)
+    def show_win(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("Победа")
+        msg.setText("Верно! Вы выиграли гироскутер.")
+        msg.exec_()
+
+    # Функция, если ответ неправильный (вызывается при клике на остальные)
+    def show_lose(self):
+        msg = QMessageBox()
+        msg.setWindowTitle("Мимо")
+        msg.setText("Нет, в 2015 году. Вы выиграли фирменный плакат.")
+        msg.exec_()
+
+
+# Запуск программы
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    window = ContestWindow()
+    window.show()
+    sys.exit(app.exec_())
