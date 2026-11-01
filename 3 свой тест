@@ -1,67 +1,99 @@
-import sys # Модуль для запуска программы
-# Импортируем инструменты PyQt
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QRadioButton, QVBoxLayout, QMessageBox
+# ============================================
+# Memory Card: интерфейс приложения (PyQt5)
+# ============================================
+
+# --- 1. Подключаем инструменты ---
+from PyQt5.QtCore import Qt   # нужен для выравнивания (Qt.AlignLeft и др.)
+from PyQt5.QtWidgets import (
+    QApplication, QWidget,         # приложение и окно
+    QHBoxLayout, QVBoxLayout,      # горизонтальная и вертикальная "полки"
+    QGroupBox, QRadioButton,       # рамка и переключатели
+    QPushButton, QLabel            # кнопка и надпись
+)
+
+# Создаём приложение. Всегда делаем это до создания виджетов.
+app = QApplication([])
 
 
-# Создаем класс окна (наследник QWidget)
-class TestWindow(QWidget):
-    # Конструктор окна
-    def __init__(self):
-        super().__init__() # Настройка родителя
-        
-        self.setWindowTitle("Тест для спонсоров") # Заголовок окна
-        self.resize(500, 300) # Размер окна (сделали чуть больше)
+# --- 2. Создаём виджеты (детали) ---
 
-        # Создаем вертикальную сетку
-        layout = QVBoxLayout()
+# Панель вопроса
+btn_OK = QPushButton('Ответить')                         # кнопка "Ответить"
+lb_Question = QLabel('Самый сложный вопрос в мире!')     # текст вопроса
 
-        # Создаем текст вопроса
-        question = QLabel("Как звали первого ютуб-блогера, набравшего 100000000 подписчиков?")
-        layout.addWidget(question) # Кладем вопрос в сетку
+# Рамка для вариантов ответа
+RadioGroupBox = QGroupBox('Варианты ответов')
 
-        # Создаем 6 кнопок с вариантами ответов
-        self.rb1 = QRadioButton("PewDiePie")
-        self.rb2 = QRadioButton("Рэт и Линк")
-        self.rb3 = QRadioButton("SlivkiShow")
-        self.rb4 = QRadioButton("TheBrianMaps")
-        self.rb5 = QRadioButton("Mister Max")
-        self.rb6 = QRadioButton("EeOneGuy")
-
-        # Добавляем все 6 кнопок в сетку
-        layout.addWidget(self.rb1)
-        layout.addWidget(self.rb2)
-        layout.addWidget(self.rb3)
-        layout.addWidget(self.rb4)
-        layout.addWidget(self.rb5)
-        layout.addWidget(self.rb6)
-
-        # Привязка кликов мышкой
-        self.rb1.clicked.connect(self.show_win)  # Клик по PewDiePie - победа
-        self.rb2.clicked.connect(self.show_lose) # Остальные - проигрыш
-        self.rb3.clicked.connect(self.show_lose)
-        self.rb4.clicked.connect(self.show_lose)
-        self.rb5.clicked.connect(self.show_lose)
-        self.rb6.clicked.connect(self.show_lose)
-
-        # Устанавливаем сетку в окно
-        self.setLayout(layout)
-
-    # Функция для правильного ответа
-    def show_win(self):
-        msg = QMessageBox() # Создаем окошко
-        msg.setText("Вы выиграли встречу с создателями канала") # Текст
-        msg.exec_() # Показываем
-
-    # Функция для неправильного ответа
-    def show_lose(self):
-        msg = QMessageBox() # Создаем окошко
-        msg.setText("Повезёт в другой раз!") # Текст
-        msg.exec_() # Показываем
+# Четыре переключателя (выбрать можно только один)
+rbtn_1 = QRadioButton('Вариант 1')
+rbtn_2 = QRadioButton('Вариант 2')
+rbtn_3 = QRadioButton('Вариант 3')
+rbtn_4 = QRadioButton('Вариант 4')
 
 
-# ЗАПУСК ПРОГРАММЫ
-if __name__ == '__main__':
-    app = QApplication(sys.argv) # Создаем приложение
-    window = TestWindow()        # Создаем наше окно
-    window.show()                # Показываем его
-    sys.exit(app.exec_())        # Запускаем цикл работы
+# --- 3. Раскладываем 4 варианта в 2 столбца ---
+layout_ans1 = QHBoxLayout()   # главная полка: столбцы стоят в ряд
+layout_ans2 = QVBoxLayout()   # левый столбец (сверху вниз)
+layout_ans3 = QVBoxLayout()   # правый столбец (сверху вниз)
+
+layout_ans2.addWidget(rbtn_1)   # два варианта в левый столбец
+layout_ans2.addWidget(rbtn_2)
+layout_ans3.addWidget(rbtn_3)   # два варианта в правый столбец
+layout_ans3.addWidget(rbtn_4)
+
+layout_ans1.addLayout(layout_ans2)   # столбцы кладём в одну строку
+layout_ans1.addLayout(layout_ans3)
+
+RadioGroupBox.setLayout(layout_ans1)   # готовую строку кладём в рамку
+
+
+# --- 4. Панель результата ---
+AnsGroupBox = QGroupBox('Результат теста')   # вторая рамка
+lb_Result = QLabel('прав ты или нет?')       # здесь будет "Правильно" / "Неправильно"
+lb_Correct = QLabel('ответ будет тут!')      # здесь будет правильный ответ
+
+layout_res = QVBoxLayout()
+# Result прижимаем влево и вверх
+layout_res.addWidget(lb_Result, alignment=(Qt.AlignLeft | Qt.AlignTop))
+# Correct ставим по центру и даём ему больше места (stretch=2)
+layout_res.addWidget(lb_Correct, alignment=Qt.AlignHCenter, stretch=2)
+
+AnsGroupBox.setLayout(layout_res)   # кладём в рамку
+
+
+# --- 5. Собираем три строки окна ---
+layout_line1 = QHBoxLayout()   # строка 1: вопрос
+layout_line2 = QHBoxLayout()   # строка 2: варианты ИЛИ результат
+layout_line3 = QHBoxLayout()   # строка 3: кнопка "Ответить"
+
+# Строка 1: вопрос по центру
+layout_line1.addWidget(lb_Question, alignment=(Qt.AlignHCenter | Qt.AlignVCenter))
+
+# Строка 2: кладём обе рамки в одну строку. Видна будет только одна.
+layout_line2.addWidget(RadioGroupBox)
+layout_line2.addWidget(AnsGroupBox)
+RadioGroupBox.hide()   # прячем рамку с вариантами, показываем результат
+# Чтобы увидеть варианты ответов, замените на: AnsGroupBox.hide()
+
+# Строка 3: кнопка по центру
+layout_line3.addStretch(1)                  # пустое место слева
+layout_line3.addWidget(btn_OK, stretch=2)   # кнопка (большая)
+layout_line3.addStretch(1)                  # пустое место справа
+
+
+# --- 6. Собираем окно ---
+layout_card = QVBoxLayout()   # главная полка: строки друг под другом
+
+layout_card.addLayout(layout_line1, stretch=2)   # вопрос: 2 части места
+layout_card.addLayout(layout_line2, stretch=8)   # ответы: 8 частей (больше всего)
+layout_card.addStretch(1)                        # пустое место
+layout_card.addLayout(layout_line3, stretch=1)   # кнопка: 1 часть
+layout_card.addStretch(1)                        # пустое место
+layout_card.setSpacing(5)                        # расстояние между строками
+
+window = QWidget()                     # создаём окно
+window.setLayout(layout_card)          # кладём главную полку в окно
+window.setWindowTitle('Memory Card')   # заголовок окна
+window.show()                          # показываем окно
+
+app.exec_()   # запускаем приложение (без этого окно сразу закроется)
