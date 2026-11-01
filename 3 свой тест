@@ -1,10 +1,11 @@
+#шаг 1
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QPushButton,
     QRadioButton, QGroupBox, QHBoxLayout, QVBoxLayout)
 
 app = QApplication([])   # создаём приложение (всегда первым)
 
-
+#шаг 2
 # Панель вопроса
 btn_OK = QPushButton('Ответить')                  # кнопка
 lb_Question = QLabel('Самый сложный вопрос в мире!')  # надпись с вопросом
@@ -18,7 +19,7 @@ rbtn_2 = QRadioButton('Вариант 2')
 rbtn_3 = QRadioButton('Вариант 3')
 rbtn_4 = QRadioButton('Вариант 4')
 
-
+#шаг 3
 
 layout_ans1 = QHBoxLayout()   # главный: столбцы стоят В РЯД (слева направо)
 layout_ans2 = QVBoxLayout()   # левый столбец (сверху вниз)
@@ -34,7 +35,7 @@ layout_ans1.addLayout(layout_ans3)
 
 RadioGroupBox.setLayout(layout_ans1)   # строку кладём в рамку
 
-
+#шаг 4
 
 AnsGroupBox = QGroupBox('Результат теста')   # вторая рамка
 lb_Result = QLabel('прав ты или нет?')       # «Правильно/Неправильно»
@@ -45,7 +46,7 @@ layout_res.addWidget(lb_Result, alignment=(Qt.AlignLeft | Qt.AlignTop))
 layout_res.addWidget(lb_Correct, alignment=Qt.AlignHCenter, stretch=2)
 AnsGroupBox.setLayout(layout_res)
 
-
+#шаг 5
 
 
 layout_line1 = QHBoxLayout()   # строка 1: вопрос
@@ -62,7 +63,7 @@ layout_line3.addStretch(1)              # пустое место слева
 layout_line3.addWidget(btn_OK, stretch=2)   # кнопка (большая)
 layout_line3.addStretch(1)              # пустое место справа
 
-
+#шаг 6
 
 layout_card = QVBoxLayout()   # главная полка: строки друг под другом
 
